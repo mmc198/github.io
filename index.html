@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>跳转中...</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: #f4f6f9;
+  font-family: Arial, sans-serif;
+}
+.loading {
+  text-align: center;
+}
+.redirect-image {
+  max-width: 100%;
+  height: auto;
+  margin: 20px auto;
+}
+</style>
+</head>
+<body>
+<div class="loading">
+  <img id="redirectImage" class="redirect-image" src="1.png" alt="跳转图片">
+</div>
+<script>
+// 修改为你的后台API地址
+const apiUrl = 'http://45.207.214.203/admin/api/get_redirect.php';
+
+// 设置图片显示1秒后开始跳转
+setTimeout(() => {
+  fetch(apiUrl, {
+    method: 'POST',
+    mode: 'cors'
+  })
+  .then(response => response.json())
+  .then(result => {
+    if (result.code === 0 && result.data.url) {
+      window.location.href = result.data.url;
+    } else {
+      document.getElementById('message').textContent = '未设置跳转地址';
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    document.getElementById('message').textContent = '服务暂时不可用';
+  });
+}, 1000); // 1000毫秒 = 1秒
+</script>
+</body>
+</html>
